@@ -8,11 +8,13 @@ export default function CompanyDetails(props){
   const [descriptionText, setDescriptionText] = useState("");
 
     useEffect(() => {
-    if (props.descriptionPath && typeof props.descriptionPath === "string") {
+    if (props.descriptionPath && typeof props.descriptionPath === "string" && props.descriptionPath !== "") {
         fetch(props.descriptionPath)
-        .then(res => res.text())
+        .then(res => res.ok ? res.text() : "Description not found.")
         .then(text => setDescriptionText(text))
         .catch(() => setDescriptionText("Description not available."));
+    } else {
+        setDescriptionText("Description not available.");
     }
     }, [props.descriptionPath]);
 
@@ -49,9 +51,6 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps(context) {
-    // const { default: fs } = await import('fs');
-    // const { default: path } = await import('path');
-
     // fetch data for a single company
     const companyId = context.params.companyId;
     // fetch a single company dynamically
@@ -69,13 +68,8 @@ export async function getStaticProps(context) {
         notFound: true,
         };
     }
-    console.log(selectedCompany);
-    // const descPath = path.join(process.cwd(), selectedCompany.description);
-    // const description = fs.readFileSync(descPath, 'utf8');
 
-    // const description = selectedCompany.description ? `/descriptions/${selectedCompany.description}` : null;
-
-    const descriptionPath = selectedCompany.description ? `${selectedCompany.description}` : null;
+    const descriptionPath = selectedCompany?.description ? `${selectedCompany.description}` : null;
 
     return{
         props: {
