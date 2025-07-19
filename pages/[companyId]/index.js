@@ -61,7 +61,7 @@ export async function getStaticProps(context) {
     const companiesCollection = db.collection('Collection1');
 
     let selectedCompany = await companiesCollection.findOne({ categoryid: companyId });
-
+    
     client.close();
 
     if (!selectedCompany) {
@@ -75,7 +75,7 @@ export async function getStaticProps(context) {
 
     // const description = selectedCompany.description ? `/descriptions/${selectedCompany.description}` : null;
 
-    const descriptionPath = selectedCompany.description ? `/descriptions/${selectedCompany.description}` : null;
+    const descriptionPath = selectedCompany.description ? `/db/descriptions/${selectedCompany.description}` : null;
 
     return{
         props: {
