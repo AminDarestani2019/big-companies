@@ -16,10 +16,12 @@ export default function NewCompanyForm(props)
 
         const enteredTitle = titleInputRef.current.value;
         const enteredImage = imageInputRef.current.value;
+        const enteredCategoryid = enteredTitle.toLowerCase().replace(/\s+/g, "-");
         const enteredAddress = addressInputRef.current.value;
         const enteredDescription = descriptionInputRef.current.value;
 
         const companyData = {
+            categoryid:enteredCategoryid,
             title:enteredTitle,
             image:enteredImage,
             address:enteredAddress,

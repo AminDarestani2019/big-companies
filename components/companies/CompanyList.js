@@ -7,8 +7,8 @@ export default function CompanyList(props)
         <ul className={classes.list}>
             {props.companies.map((company) =>(
                 <CompanyItem
-                    key={company.id}
-                    id={company.id}
+                    key={company.categoryid}
+                    id={company.categoryid}
                     image={company.image}
                     title={company.title}
                     address={company.address}

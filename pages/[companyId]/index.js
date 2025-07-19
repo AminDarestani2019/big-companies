@@ -1,9 +1,7 @@
 import { Fragment } from "react";
 import CompanyDetail from "../../components/companies/CompanyDetail";
 import Head from "next/head";
-import path from 'path';
-import fs from 'fs';
-import { MongoClient, ObjectId } from "mongodb";
+import { MongoClient } from "mongodb";
 
 export default function CompanyDetails(props){
     return(
@@ -23,39 +21,38 @@ export default function CompanyDetails(props){
 }
 
 export async function getStaticPaths() {
-    const client = await MongoClient.connect(process.env.MONGODB_URI || "mongodb://localhost:27017");
+    const client = await MongoClient.connect(process.env.MONGODB_URI);
 
-    const db = client.db('companiesdb');
-    const companiesCollection = db.collection('companies');
+    const db = client.db('myAppDB');
+    const companiesCollection = db.collection('Collection1');
 
-    const companies = await companiesCollection.find({}, { _id: 1 }).toArray();
+    const companies = await companiesCollection.find({}, { projection: { categoryid: 1 } }).toArray();
 
+   
     client.close();
 
     return{
             fallback:'blocking',
             paths:companies.map(c =>({ 
-                params: {companyId:c.id.toString()},
+                params: {companyId:c.categoryid.toString()},
             })
         )
     };
 }
 
 export async function getStaticProps(context) {
+    const { default: fs } = await import('fs');
+    const { default: path } = await import('path');
+
     // fetch data for a single company
     const companyId = context.params.companyId;
     // fetch a single company dynamically
-    const client = await MongoClient.connect(process.env.MONGODB_URI || "mongodb://localhost:27017");
+    const client = await MongoClient.connect(process.env.MONGODB_URI);
 
-    const db = client.db('companiesdb');
-    const companiesCollection = db.collection('companies');
+    const db = client.db('myAppDB');
+    const companiesCollection = db.collection('Collection1');
 
-    let selectedCompany = null;
-    if(ObjectId.isValid(companyId)){
-        selectedCompany = await companiesCollection.findOne({ 
-        _id: new ObjectId(companyId) 
-    });
-    }
+    let selectedCompany = await companiesCollection.findOne({ categoryid: companyId });
 
     client.close();
 
@@ -70,7 +67,7 @@ export async function getStaticProps(context) {
 
     return{
         props: {
-            id: selectedCompany.id,
+            categoryid: selectedCompany.categoryid,
             title: selectedCompany.title,
             image: selectedCompany.image,
             address: selectedCompany.address,

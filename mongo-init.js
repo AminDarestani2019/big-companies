@@ -1,4 +1,4 @@
-db = db.getSiblingDB('companiesdb')
+db = db.getSiblingDB('myAppDB')
 
 db.companies.insertMany([
   {

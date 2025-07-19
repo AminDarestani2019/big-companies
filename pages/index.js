@@ -17,9 +17,9 @@ export default function Home(props) {
 }
 
 export async function getStaticProps() {
-  const client = await MongoClient.connect(process.env.MONGODB_URI || "mongodb://localhost:27017");
-  const db = client.db('companiesdb');
-  const companiesCollection = db.collection('companies');
+  const client = await MongoClient.connect(process.env.MONGODB_URI);
+  const db = client.db('myAppDB');
+  const companiesCollection = db.collection('Collection1');
   const companies = await companiesCollection.find().toArray();
   client.close();
   // const companies = getAllCompanies();
@@ -30,7 +30,7 @@ export async function getStaticProps() {
             title: company.title,
             address: company.address,
             image: company.image,
-            id: company._id.toString(),
+            categoryid: company.categoryid.toString(),
         })),
     },
     revalidate: 1,

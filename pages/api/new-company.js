@@ -6,9 +6,14 @@ import { MongoClient } from "mongodb";
 export default async function handler(req,res) {
     if(req.method === 'POST'){
         const data = req.body;
-        const client = await MongoClient.connect(process.env.MONGODB_URI || "mongodb://localhost:27017");
-        const db = client.db('companiesdb');
-        const companiesCollection = db.collection('companies');
+          
+        if (!data.categoryid) {
+            return res.status(400).json({ message: "categoryid is required" });
+        }
+
+        const client = await MongoClient.connect(process.env.MONGODB_URI);
+        const db = client.db('myAppDB');
+        const companiesCollection = db.collection('Collection1');
         const result = await companiesCollection.insertOne(data);
 
         client.close();

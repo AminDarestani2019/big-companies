@@ -1,6 +1,6 @@
 const { MongoClient } = require('mongodb');
 
-const uri = process.env.MONGODB_URI || "mongodb://localhost:27017/companiesdb";
+const uri = process.env.MONGODB_URI;
 
 async function seed() {
   const client = new MongoClient(uri);
@@ -271,7 +271,6 @@ async function seed() {
   }
     ]);
 
-    console.log("✅ Seed data inserted.");
   } catch (err) {
     console.error("❌ Error inserting seed data:", err);
   } finally {

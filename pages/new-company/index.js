@@ -14,8 +14,15 @@ export default function NewCompanyPage(){
                 'Content-Type':'application/json'
             }
         });
+
+        if (!response.ok) {
+            const errorData = await response.json();
+            alert("error in saving info" + (errorData.message || "unknown"));
+            return;
+        }
+        
         const data = await response.json();
-        console.log(data);
+        alert("compnay is successfully added :" + data.toString());
         route.push('/');
     }
     return (
