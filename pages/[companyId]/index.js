@@ -7,14 +7,15 @@ export default function CompanyDetails(props){
       // حالت محلی برای متن description
   const [descriptionText, setDescriptionText] = useState("");
 
-  useEffect(() => {
-    if (props.descriptionPath) {
-      fetch(props.descriptionPath)
+    useEffect(() => {
+    if (props.descriptionPath && typeof props.descriptionPath === "string") {
+        fetch(props.descriptionPath)
         .then(res => res.text())
         .then(text => setDescriptionText(text))
         .catch(() => setDescriptionText("Description not available."));
     }
-  }, [props.descriptionPath]);
+    }, [props.descriptionPath]);
+
 
     return(
         <Fragment>
@@ -74,7 +75,7 @@ export async function getStaticProps(context) {
 
     // const description = selectedCompany.description ? `/descriptions/${selectedCompany.description}` : null;
 
-    const descriptionPath = selectedCompany.description || null;
+    const descriptionPath = selectedCompany.description ? `/descriptions/${selectedCompany.description}` : null;
 
     return{
         props: {
