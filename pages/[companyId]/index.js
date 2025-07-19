@@ -69,13 +69,13 @@ export async function getStaticProps(context) {
         notFound: true,
         };
     }
-   
+    console.log(selectedCompany);
     // const descPath = path.join(process.cwd(), selectedCompany.description);
     // const description = fs.readFileSync(descPath, 'utf8');
 
     // const description = selectedCompany.description ? `/descriptions/${selectedCompany.description}` : null;
 
-    const descriptionPath = selectedCompany.description ? `/db/descriptions/${selectedCompany.description}` : null;
+    const descriptionPath = selectedCompany.description ? `${selectedCompany.description}` : null;
 
     return{
         props: {
