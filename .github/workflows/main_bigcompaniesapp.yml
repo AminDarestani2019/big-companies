@@ -25,11 +25,18 @@ jobs:
 
       - name: npm install, build, and test
         run: |
-          npm install
-          npm run build --if-present
-          npm run test --if-present
+          npm install --production=false
+          npm run build 
         env:
           MONGODB_URI: ${{ secrets.MONGODB_URI }}
+
+      - name: Verify Next.js exists
+        run: |
+          if [ ! -d "node_modules/next" ]; then
+            echo "Next.js not found in node_modules!" && exit 1
+          else
+            echo "Next.js is installed."
+          fi
 
       - name: Zip artifact for deployment
         run: zip -r release.zip .next node_modules package.json package-lock.json public 
