@@ -13,6 +13,9 @@ FROM node:18-alpine AS runner
 WORKDIR /app
 ENV NODE_ENV=production
 
+ARG MONGODB_URI
+ENV MONGODB_URI=$MONGODB_URI
+
 COPY --from=builder /app/.next .next
 COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/package.json ./package.json
