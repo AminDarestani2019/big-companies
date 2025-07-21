@@ -1,19 +1,26 @@
-FROM node:18
+# build the application
+FROM node:18-alpine AS builder
+
 WORKDIR /app
-
-RUN apt-get update \
-    && apt-get install -y netcat-openbsd \
-    && rm -rf /var/lib/apt/lists/*
-    
 COPY package.json package-lock.json ./
-RUN npm install
+RUN npm install --frozen-lockfile
 COPY . .
+RUN npm run build
 
-# Add wait-for script
+# run the application
+FROM node:18-alpine AS runner
 
-COPY wait-for.sh /wait-for.sh
-RUN chmod +x /wait-for.sh
+WORKDIR /app
+ENV NODE_ENV=production
 
-# Use the script before build
+COPY --from=builder /app/.next .next
+COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /app/package.json ./package.json
+
+COPY --from=builder /app/public ./public
+
+# create a volume for public
+VOLUME ["/app/public"]
+
 EXPOSE 3000
-CMD [ "/wait-for.sh", "mongodb","npm" , "run","build-and-start" ]
+CMD ["npm","run", "start"]

@@ -9,6 +9,7 @@ export default function Home(props) {
       <Head>
         <title>Successful companies based on Acquired podcast</title>
         <meta name='description' content="Browse a huge list of Successful companies based on Acquired podcast"></meta>
+        <link rel="icon" href="/favicon.ico" />
       </Head>
       <CompanyList companies={props.companies} />
     </Fragment>
