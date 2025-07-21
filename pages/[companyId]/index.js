@@ -36,18 +36,24 @@ export default function CompanyDetails(props){
 }
 
 export async function getStaticPaths() {
-    const client = await MongoClient.connect(process.env.MONGODB_URI);
-    const db = client.db('myAppDB');
-    const companiesCollection = db.collection('Collection1');
-    const companies = await companiesCollection.find({}, { projection: { categoryid: 1 } }).toArray();
-    client.close();
-    return{
-            fallback:'blocking',
-            paths:companies.map(c =>({ 
-                params: {companyId:c.categoryid.toString()},
-            })
-        )
-    };
+    try {
+        const client = await MongoClient.connect(process.env.MONGODB_URI);
+        const db = client.db('myAppDB');
+        const companiesCollection = db.collection('Collection1');
+        const companies = await companiesCollection.find({}, { projection: { categoryid: 1 } }).toArray();
+        client.close();
+        return{
+                fallback:'blocking',
+                paths:companies.map(c =>({ 
+                    params: {companyId:c.categoryid.toString()},
+                })
+            )
+        };
+    }
+    catch(e){
+        return { paths: [], fallback: true };
+    }
+    
 }
 
 export async function getStaticProps(context) {
