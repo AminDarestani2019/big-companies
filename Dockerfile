@@ -16,9 +16,8 @@ RUN if [ -z "$MONGODB_URI" ]; then \
     else \
       echo "✅ MONGODB_URI is set (hidden for security)."; \
     fi
-RUN SKIP_BUILD_STATIC_GENERATION=true npm run build
 
-RUN npm run build && ls -la /app/.next  # Debug: Check .next exists
+RUN npm run build
 
 # run the application
 FROM node:18-alpine AS runner
