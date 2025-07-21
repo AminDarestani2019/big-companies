@@ -6,17 +6,17 @@ COPY package.json package-lock.json ./
 RUN npm install --frozen-lockfile
 COPY . .
 
-RUN SKIP_BUILD_STATIC_GENERATION=true npm run build
+
 
 ARG MONGODB_URI
 ENV MONGODB_URI=$MONGODB_URI
-
 
 RUN if [ -z "$MONGODB_URI" ]; then \
       echo "❌ MONGODB_URI is NOT set. Build will probably fail."; \
     else \
       echo "✅ MONGODB_URI is set (hidden for security)."; \
     fi
+RUN SKIP_BUILD_STATIC_GENERATION=true npm run build
 
 RUN npm run build && ls -la /app/.next  # Debug: Check .next exists
 
