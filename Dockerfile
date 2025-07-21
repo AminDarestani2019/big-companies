@@ -6,6 +6,7 @@ COPY package.json package-lock.json ./
 RUN npm install --frozen-lockfile
 COPY . .
 
+RUN SKIP_BUILD_STATIC_GENERATION=true npm run build
 
 ARG MONGODB_URI
 ENV MONGODB_URI=$MONGODB_URI

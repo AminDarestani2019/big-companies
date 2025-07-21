@@ -37,6 +37,12 @@ export default function CompanyDetails(props){
 
 export async function getStaticPaths() {
     try {
+        if (process.env.SKIP_BUILD_STATIC_GENERATION) {
+        return {
+            props: { companies: [] }, // داده خالی
+        };
+        }
+
         const client = await MongoClient.connect(process.env.MONGODB_URI);
         const db = client.db('myAppDB');
         const companiesCollection = db.collection('Collection1');
@@ -57,6 +63,13 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps(context) {
+
+    if (process.env.SKIP_BUILD_STATIC_GENERATION) {
+    return {
+        props: { companies: [] }, // داده خالی
+    };
+    }
+
     if (!process.env.MONGODB_URI) {
         console.warn("MONGODB_URI is not set, skipping DB fetch during build");
         return { props: { companies: [] } };
