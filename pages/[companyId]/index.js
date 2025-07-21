@@ -57,6 +57,10 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps(context) {
+    if (!process.env.MONGODB_URI) {
+        return { props: { companies: [] } };
+    }
+
     // fetch data for a single company
     const companyId = context.params.companyId;
     // fetch a single company dynamically
