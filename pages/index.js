@@ -18,6 +18,11 @@ export default function Home(props) {
 }
 
 export async function getStaticProps() {
+  if (!process.env.MONGODB_URI) {
+    console.warn("MONGODB_URI is not set, skipping DB fetch during build");
+    return { props: { companies: [] } };
+  }
+
   const client = await MongoClient.connect(process.env.MONGODB_URI);
   const db = client.db('myAppDB');
   const companiesCollection = db.collection('Collection1');

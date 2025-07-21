@@ -58,6 +58,7 @@ export async function getStaticPaths() {
 
 export async function getStaticProps(context) {
     if (!process.env.MONGODB_URI) {
+        console.warn("MONGODB_URI is not set, skipping DB fetch during build");
         return { props: { companies: [] } };
     }
 
