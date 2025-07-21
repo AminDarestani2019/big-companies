@@ -21,7 +21,7 @@ jobs:
           password: ${{ secrets.AZURE_ACR_PASSWORD }}
 
       - name: Build Docker image
-        run: docker buildx build --load --build-arg MONGODB_URI="${{ secrets.MONGODB_URI }}" -t "${{ secrets.AZURE_ACR_LOGIN_SERVER }}/my-nextjs-app:latest" .
+        run: docker build --build-arg MONGODB_URI="${{ secrets.MONGODB_URI }}" -t "${{ secrets.AZURE_ACR_LOGIN_SERVER }}/my-nextjs-app:latest" .
 
 
       - name: Push Docker image
