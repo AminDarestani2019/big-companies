@@ -3,7 +3,7 @@ name: Build and Push Docker Image to ACR
 on:
   push:
     branches:
-      - main  
+      - main
 
 jobs:
   build-and-push:
@@ -21,9 +21,7 @@ jobs:
           password: ${{ secrets.AZURE_ACR_PASSWORD }}
 
       - name: Build Docker image
-        run: |
-          docker build -t ${{ secrets.AZURE_ACR_LOGIN_SERVER }}/my-nextjs-app:latest .
+        run: docker build -t ${{ secrets.AZURE_ACR_LOGIN_SERVER }}/my-nextjs-app:latest .
 
       - name: Push Docker image
-        run: |
-          docker push ${{ secrets.AZURE_ACR_LOGIN_SERVER }}/my-nextjs-app:latest
+        run: docker push ${{ secrets.AZURE_ACR_LOGIN_SERVER }}/my-nextjs-app:latest
