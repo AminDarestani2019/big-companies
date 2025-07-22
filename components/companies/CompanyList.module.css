@@ -6,3 +6,9 @@
       align-items: stretch;
       height: auto;
     }
+
+    @media (max-width: 768px) {
+      .list {
+        grid-template-columns: 1fr; /* 1 ستون */
+      }
+    }
